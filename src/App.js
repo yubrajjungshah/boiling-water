@@ -1,23 +1,39 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+
 import './App.css';
+import TemperatureInputInCelsius from './components/TemperatureInputInCelsius';
+import TemperatureInputInFahrenheit from './components/TemperatureInputInFahrenheit';
+import BoilingResult from './components/BoilingResult';
+import { toCelsius,  toFarenheit} from './converter';
 
 function App() {
+  const [temperatureInCelsius, setTemperatureInCelsius] = useState('100');
+  const [temperatureInFarenheit, setTemperatureInFarenheit] = useState('200');
+
+  function handleTemperatureInCelsius(event) {
+      const temperature = event.target.value;
+      if(isNaN(temperature)){
+        return;
+      }
+      setTemperatureInCelsius(temperature);
+      setTemperatureInFarenheit(toFarenheit(temperature));
+  }
+
+  function handleTemperatureInFarenheit(event) {
+      const temperature = event.target.value;
+      if(isNaN(temperature)) {
+        return;
+      }
+      setTemperatureInFarenheit(temperature);
+      setTemperatureInCelsius(toCelsius(temperature));
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <h1>Boiling Meter</h1>
+      <TemperatureInputInCelsius temperatureInCelsius={temperatureInCelsius} handleTemperatureInCelsius={handleTemperatureInCelsius} />
+      <TemperatureInputInFahrenheit temperatureInFarenheit={temperatureInFarenheit}  handleTemperatureInFarenheit={handleTemperatureInFarenheit} />
+      <BoilingResult temperatureInCelsius={temperatureInCelsius}/>
     </div>
   );
 }
